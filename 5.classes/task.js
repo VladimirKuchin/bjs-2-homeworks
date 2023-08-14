@@ -58,8 +58,7 @@ class Library {
 		this.name = name;
 		this.books = [];
 	}
-}
-addBook(book) {
+	addBook(book) {
 	if (book.state > 30) {
 		this.books.push(book);
 	}
@@ -73,4 +72,5 @@ giveBookByName(bookName) {
 		this.books.splice(this.books.indexOf(book), 1);
 	}
 	return book;
+}
 }
