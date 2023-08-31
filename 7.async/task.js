@@ -6,16 +6,14 @@ class AlarmClock {
 	addClock (time, callback) {
 		if (!time || !callback) {
 			throw new Error ("Отсутствуют обязательные аргументы");
+	}else if (this.alarmCollection.some (element => element === element.time) === true) {
+		console.warn ('Уже присутствует звонок на это время');
 	}
-	const existingAlarm = this.alarmCollection.some (element => element === element.time);
-	if (existingAlarm === true) {
-		console.warn ('Уже присутстыует звонок на это время');
-	}
-	this.alarmCollection.push ({callback: callback(), time: time, canCall: true});
+	this.alarmCollection.push ({callback, time, canCall: true});
 	}
 
 	removeClock (time) {
-		this.alarmCollection = this.alarmCollection.filter (time => this.alarmCollection.time !== time);
+		this.alarmCollection = this.alarmCollection.filter (element => element.time !== time);
 	}
 
 	getCurrentFormattedTime () {
@@ -30,11 +28,10 @@ class AlarmClock {
 			return;
 		}else {
 			const checkAlarms = () => {
-				const currentTime = this.getCurrentFormattedTime ();
 				this.alarmCollection.forEach (element => {
-					if (element.time === currentTime && element.canCall) {
-						alarm.canCall = false;
-						alarm.callback();
+					if (element.time === this.getCurrentFormattedTime () && element.canCall) {
+						element.canCall = false;
+						element.callback();
 					}
 				});
 				checkAlarms();
@@ -49,8 +46,8 @@ class AlarmClock {
 	}
 
 	resetAllCalls () {
-		this.alarmCollection.forEach (alarm => {
-		alarm.canCall = true
+		this.alarmCollection.forEach (element => {
+		element.canCall = true
 		});
 	}
 
