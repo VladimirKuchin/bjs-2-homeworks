@@ -1,24 +1,26 @@
 //Задача № 1
 function cachingDecoratorNew(func) {
-  let cache = [];
-
-  function wrapper (...args) {
+  let cache = [
+      { hash: "7f49b84d0bbc38e96493718013baace6", value: 60 },
+      { hash: "36d9d8df7a0a21c339bf74e2a30d68bd", value: 6 },
+      { hash: "fd526d0a3bfd3ebdc1fc0f998d241da6", value: 791 },
+  ];
+  const cacheValuesCount = 5;
+  return (...args) => {
     const hash = md5(args);
-    let objectInCache = cache.find(item => item.cache === hash);
+    const objectInCache = cache.find((object) => object.hash === hash);
       if (objectInCache) {
-        console.log("Из кеша: " + objectInCache[hash]);
-        return "Из кеша: " + objectInCache[hash];
+        console.log("Из кеша: " + objectInCache.value);
+        return "Из кеша: " + objectInCache.value;
       }
       let result = func(...args);
-      cache[hash] = result;
-      cache.push(result);
-      if (cache.lenght > 5) {
+      cache.push({hash: hash, value: result});
+      if (cache.lenght > cacheValuesCount) {
         cache.shift();
       }
       console.log ("Вычисляем: " + result);
       return "Вычисляем: " + result;
   }
-  return wrapper;
 }
 
 
